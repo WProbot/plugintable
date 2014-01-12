@@ -129,7 +129,7 @@ _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
 			<h1 class="logo"><a href="http://plugintable.com" title="The Periodic Table of WordPress Plugins">The Periodic Table of WordPress Plugins</a></h1>
 			<div class="description">
 				<p>
-					Over <strong>23&lsquo;000 WordPress plugins</strong> have been contributed to the <a href="http://wordpress.org/extend/plugins/" target="_blank">WordPress.org Plugin Directory</a>.
+					Around <strong>30&lsquo;000 WordPress plugins</strong> have been contributed to the <a href="http://wordpress.org/extend/plugins/" target="_blank">WordPress.org Plugin Directory</a>.
 					Millions of websites are powered by these plugins, developed and maintained by an amazing open-source community around the globe.
 					This table showcases the 108 most popular WordPress plugins, ranked by the number of downloads.
 				</p>
