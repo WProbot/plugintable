@@ -160,20 +160,23 @@ function get_plugin_name( $name, $words = 3, $short = false ) {
 		case 'BackUpWordPress':
 			return 'BackUp&shy;WordPress';
 			break;
-		case 'FeedWordPress':
+        case 'FeedWordPress':
 			return 'Feed&shy;WordPress';
 			break;
-		case 'WooCommerce':
-			return 'Woo&shy;Commerce';
-			break;
-	}
+        case 'WooCommerce':
+            return 'Woo&shy;Commerce';
+            break;
+        case 'underConstruction':
+            return 'under&shy;Construction';
+            break;
+    }
 
 	if ( true === $short ) {
 		switch ( $name ) {
 			case 'NextScripts: Social Networks Auto-Poster':
 				return 'Social Networks Auto-Poster';
 				break;
-			case 'ShareThis: Share Buttons and Sharing Analytics':
+			case 'ShareThis: Share Buttons and Social Analytics':
 				return 'ShareThis';
 				break;
 			case 'Post video players, slideshow albums, photo galleries and music / podcast playlist':
@@ -203,10 +206,10 @@ function get_plugin_name( $name, $words = 3, $short = false ) {
 			case 'MapPress Easy Google Maps':
 				return 'MapPress';
 				break;
-			case 's2Member&#174; Framework (Member Roles, Capabilities, Membership, PayPal Members)':
+			case 's2Member Framework (Member Roles, Capabilities, Membership, PayPal Members)':
 				return 's2Member Framework';
 				break;
-			case 'Shareaholic &#124; email, bookmark, share buttons':
+			case 'Shareaholic &#124; share buttons &#38; related posts':
 				return 'Shareaholic';
 				break;
 			case 'Shareaholic* &#124; email, bookmark, share buttons':
@@ -214,6 +217,15 @@ function get_plugin_name( $name, $words = 3, $short = false ) {
 				break;
 			case 'MediaElement.js - HTML5 Video &#38; Audio Player':
 				return 'Media&shy;Element.js';
+				break;
+			case 'Advanced YouTube Embed by Embed Plus':
+				return 'Advanced YouTube Embed';
+				break;
+            case 'MailPoet Newsletters (formerly Wysija)':
+				return 'MailPoet Newsletters';
+				break;
+            case 'Quick Cache (Speed Without Compromise)':
+				return 'Quick Cache';
 				break;
 		}
 	}
