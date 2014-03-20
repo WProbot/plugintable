@@ -124,19 +124,9 @@ img {
     margin: 0 0 10px 10px;
     padding: 2px;
     background: #bcbcbc;
-    border: 1px solid #A2A4A5;
-    -webkit-border--radius: 2px;
-    -moz-border-radius: 2px;
-    -o-border-radius-: 2px;
-    border-radius: 2px;
     -moz-background-clip: padding;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
-    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
-    -ms-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
-    -o-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
     -webkit-transition: all 0.5s ease-out;
     -moz-transition: all 0.5s ease-out;
     transition: all 0.5s ease-out;
@@ -255,26 +245,20 @@ img {
 .tooltip {
     position: absolute;
     z-index: 10;
-    right: 74px;
+    right: 75px;
     top: -1px;
-    width: 513px;
-    height: 369px;
+    width: 514px;
+    height: 371px;
     background: #438aa6 url(../img/tooltipbg.png) -190px -90px no-repeat;
-    border: 1px solid #9E9E9E;
     color: #333;
     cursor: auto;
     -webkit-transition: all 0.5s ease-out;
     -moz-transition: all 0.5s ease-out;
     transition: all 0.5s ease-out;
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-    -ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-    -o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 
 .tooltip.right {
-    left: 74px;
+    left: 75px;
 }
 
 .tooltip.bottomtop {
@@ -388,4 +372,15 @@ img {
 
 .footer .info {
     float: right;
+}
+
+/**
+ *
+ * PDF Creation Styles
+ *
+ **/
+
+@page {
+    size: A3 landscape;
+    margin: 30pt 30pt 30pt 30pt
 }
