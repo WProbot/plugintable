@@ -251,5 +251,5 @@ function get_plugin_name( $name, $words = 3, $short = false ) {
 }
 
 function get_plugin_url( $slug ) {
-	return 'http://wordpress.org/extend/plugins/' . $slug . '/'; 
+	return 'http://wordpress.org/plugins/' . $slug . '/';
 }
