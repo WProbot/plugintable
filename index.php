@@ -162,7 +162,7 @@ foreach( $plugins as $plugin ) : ?>
 </div>
 <div class="footer">
 	<p class="copyright">&copy; <?php echo date('Y'); ?> plugintable.com</p>
-	<p class="info">Brought to you by <a href="http://twitter.com/swissspidy" target="_blank" title="@swissspidy - Pascal Birchler">@swissspidy</a> / <a href="http://wp-magazin.ch" title="Swiss WordPress Magazine" target="_blank">wp-magazin.ch</a></p>
+	<p class="info">Brought to you by <a href="https://twitter.com/swissspidy" target="_blank" title="@swissspidy - Pascal Birchler">@swissspidy</a> and <a href="https://twitter.com/spinpress" target="_blank" title="Twitter - @SpinPress">@SpinPress</a> / <a href="http://spinpress.com" title="SpinPress – A new spin on WordPress community news" target="_blank">SpinPress.com</a></p>
 </div>
 </div>
 <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9/jquery.min.js"></script>-->
