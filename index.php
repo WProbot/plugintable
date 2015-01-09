@@ -182,7 +182,7 @@ if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" ) {
 		<?php endforeach; ?>
 	</div>
 	<div class="footer">
-		<p class="copyright">&copy; <?php echo date( 'Y' ); ?> plugintable.com</p>
+		<p class="copyright">&copy; <?php echo date( 'Y' ); ?> plugintable.com / see also <a href="http://wpthemetable.com/" title="The Periodic Table of WordPress Themes" target="_blank">wpthemetable.com</a></p>
 
 		<p class="info">Brought to you by
 			<a href="https://twitter.com/spinpress" target="_blank" title="Twitter - @SpinPress">@SpinPress</a> /
