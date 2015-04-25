@@ -1,62 +1,65 @@
 <?php
 
-date_default_timezone_set('Europe/Zurich');
-error_reporting(0);
+date_default_timezone_set( 'Europe/Zurich' );
+error_reporting( 0 );
 
 function sort_by_downloads( $a, $b ) {
-    if ( $a->downloaded == $b->downloaded )
-        return 0;
+	if ( $a->downloaded == $b->downloaded ) {
+		return 0;
+	}
 
-    return ( $a->downloaded > $b->downloaded ) ? -1 : 1;
+	return ( $a->downloaded > $b->downloaded ) ? - 1 : 1;
 }
 
 function get_plugins() {
-	$today = new DateTime( 'today', new DateTimeZone('Europe/Zurich') );
-	$last_updated = DateTime::createFromFormat('Y-m-d', date('Y-m-d', filemtime( '_plugins.txt' ) ), new DateTimeZone('Europe/Zurich') );
-	$plugins = @file_get_contents( './_plugins.txt' );
-	if ( $last_updated < $today || null === json_decode($plugins) || ! file_exists( '_plugins.txt' ) )
+	$today        = new DateTime( 'today', new DateTimeZone( 'Europe/Zurich' ) );
+	$last_updated = DateTime::createFromFormat( 'Y-m-d', date( 'Y-m-d', filemtime( '_plugins.txt' ) ), new DateTimeZone( 'Europe/Zurich' ) );
+	$plugins      = @file_get_contents( './_plugins.txt' );
+	if ( $last_updated < $today ||  null === json_decode( $plugins ) || ! file_exists( '_plugins.txt' ) ) {
 		remote_get_plugins();
+	}
 
 	return get_plugins_from_cache();
 }
 
 function remote_get_plugins() {
 	$data = array(
-		'action' => 'query_plugins',
-		'request'   => serialize( (object) array(
-			'browse' => 'popular',
-			'per_page'      => 108,
-			'fields'        => array(
-				'description' =>	true,
-				'compatibility' =>	false,
-				'rating' =>			true,
-				'downloaded' =>		true,
-				'downloadlink' =>	false,
-				'last_updated' =>	false,
-				'homepage' =>		false
+		'action'  => 'query_plugins',
+		'request' => serialize( (object) array(
+			'browse'   => 'popular',
+			'per_page' => 108,
+			'fields'   => array(
+				'description'   => true,
+				'compatibility' => false,
+				'rating'        => true,
+				'downloaded'    => true,
+				'downloadlink'  => false,
+				'last_updated'  => false,
+				'homepage'      => false
 			)
 		) )
 	);
-	
+
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, "http://api.wordpress.org/plugins/info/1.0/");
-	curl_setopt($ch, CURLOPT_POST, true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt( $ch, CURLOPT_URL, "http://api.wordpress.org/plugins/info/1.0/" );
+	curl_setopt( $ch, CURLOPT_POST, true );
+	curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 
-	$result = curl_exec($ch);
+	$result = curl_exec( $ch );
 
-	$data = unserialize($result);
-	if ($data !== false) {
-		usort($data->plugins, "sort_by_downloads");
-		file_put_contents( '_plugins.txt', json_encode($data->plugins) );
+	$data = unserialize( $result );
+	if ( $data !== false ) {
+		usort( $data->plugins, "sort_by_downloads" );
+		file_put_contents( '_plugins.txt', json_encode( $data->plugins ) );
 	}
 
-	curl_close($ch);
+	curl_close( $ch );
 }
 
 function get_plugins_from_cache() {
 	$plugins = file_get_contents( './_plugins.txt' );
+
 	return json_decode( $plugins, true );
 }
 
@@ -64,10 +67,21 @@ function get_element_name( $name ) {
 	static $elements = array();
 
 	// Remove unnecessary characters
-	$name = trim( str_replace( array( '"', '&', '(', ')', '/', '\\', 'WP', '|', '®', '*' ), '', html_entity_decode( $name ) ), ' -–' );
+	$name = trim( str_replace( array(
+		'"',
+		'&',
+		'(',
+		')',
+		'/',
+		'\\',
+		'WP',
+		'|',
+		'®',
+		'*'
+	), '', html_entity_decode( $name ) ), ' -–' );
 
 	// Retrieve word parts
-	$parts = preg_split("/[-– ]/", $name); // Jetpack | by | WordPress.com
+	$parts = preg_split( "/[-– ]/", $name ); // Jetpack | by | WordPress.com
 
 	/**
 	 * First attempt
@@ -78,15 +92,17 @@ function get_element_name( $name ) {
 		$letters[] = substr( $part, 0, 1 );
 
 		// If only 1 part, get 2nd letter
-		if ( 1 === count( $parts ) )
+		if ( 1 === count( $parts ) ) {
 			$letters[] = substr( $part, 1, 1 );
+		}
 	}
 	// Put element name together
-	$element =  ucfirst( strtolower( $letters[0] . $letters[1] ) );
+	$element = ucfirst( strtolower( $letters[0] . $letters[1] ) );
 
 	// If already used, try most simple: "J"
-	if ( isset($elements[$element] ) )
-		$element =  ucfirst( strtolower( $letters[0] ) );
+	if ( isset( $elements[ $element ] ) ) {
+		$element = ucfirst( strtolower( $letters[0] ) );
+	}
 
 	/**
 	 * If Jb is already used, try:
@@ -95,15 +111,15 @@ function get_element_name( $name ) {
 	 * - Jb
 	 * - Jy
 	 */
-	$x = 1;
+	$x    = 1;
 	$part = 0;
-	while ( isset($elements[$element] ) && isset( $parts[$part] )  ) {
-		if ( strlen( $parts[$part] ) == $x ) {
+	while ( isset( $elements[ $element ] ) && isset( $parts[ $part ] ) ) {
+		if ( strlen( $parts[ $part ] ) == $x ) {
 			$x = 0;
-			$part++;
+			$part ++;
 		}
-		$element =  ucfirst( strtolower( $letters[0] . substr( $parts[$part], $x, 1 ) ) );
-		$x++;
+		$element = ucfirst( strtolower( $letters[0] . substr( $parts[ $part ], $x, 1 ) ) );
+		$x ++;
 	}
 
 
@@ -141,11 +157,12 @@ function get_element_name( $name ) {
 	}
 
 	// Slug definitely already in use
-	if ( isset($elements[$element] ) ) {
+	if ( isset( $elements[ $element ] ) ) {
 		echo 'XX';
 	}
 
-	$elements[$element] = $name;
+	$elements[ $element ] = $name;
+
 	return $element;
 }
 
@@ -160,16 +177,16 @@ function get_plugin_name( $name, $words = 3, $short = false ) {
 		case 'BackUpWordPress':
 			return 'BackUp&shy;WordPress';
 			break;
-        case 'FeedWordPress':
+		case 'FeedWordPress':
 			return 'Feed&shy;WordPress';
 			break;
-        case 'WooCommerce':
-            return 'Woo&shy;Commerce';
-            break;
-        case 'underConstruction':
-            return 'under&shy;Construction';
-            break;
-    }
+		case 'WooCommerce':
+			return 'Woo&shy;Commerce';
+			break;
+		case 'underConstruction':
+			return 'under&shy;Construction';
+			break;
+	}
 
 	if ( true === $short ) {
 		switch ( $name ) {
@@ -221,10 +238,10 @@ function get_plugin_name( $name, $words = 3, $short = false ) {
 			case 'Advanced YouTube Embed by Embed Plus':
 				return 'Advanced YouTube Embed';
 				break;
-            case 'MailPoet Newsletters (formerly Wysija)':
+			case 'MailPoet Newsletters (formerly Wysija)':
 				return 'MailPoet Newsletters';
 				break;
-            case 'Quick Cache (Speed Without Compromise)':
+			case 'Quick Cache (Speed Without Compromise)':
 				return 'Quick Cache';
 				break;
 		}
@@ -232,22 +249,25 @@ function get_plugin_name( $name, $words = 3, $short = false ) {
 
 	$name = trim( $name );
 
-	$pos = strpos( $name, ' - ');
-	if ( $pos !== false && $pos !== 0 )
+	$pos = strpos( $name, ' - ' );
+	if ( $pos !== false && $pos !== 0 ) {
 		$name = substr( $name, 0, $pos );
-	$pos2 = strpos( $name, ' – ');
-	if ( $pos2 !== false && $pos2 !== 0 )
+	}
+	$pos2 = strpos( $name, ' – ' );
+	if ( $pos2 !== false && $pos2 !== 0 ) {
 		$name = substr( $name, 0, $pos2 );
+	}
 
 	$array = explode( ' ', $name );
 
 	$array = array_chunk( $array, $words );
 
-	if ( empty( $array[ 1 ] ) ) 
+	if ( empty( $array[1] ) ) {
 		return $name;
+	}
 
 
-	return rtrim( implode( ' ', $array[ 0 ] ), ',;()-–' );
+	return rtrim( implode( ' ', $array[0] ), ',;()-–' );
 }
 
 function get_plugin_url( $slug ) {
