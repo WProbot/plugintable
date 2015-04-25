@@ -150,7 +150,7 @@ if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" ) {
 						Over <strong>35&lsquo;000 WordPress plugins</strong> have been contributed to the
 						<a href="https://wordpress.org/plugins/" target="_blank">WordPress.org Plugin Directory</a>.
 						Millions of websites are powered by these plugins, developed and maintained by an amazing open-source community around the globe.
-						This table showcases the 108 most popular WordPress plugins, ranked by the number of downloads.
+						This table showcases the 108 most popular WordPress plugins, ranked by the number of active installs (though downloads are displayed).
 					</p>
 				</div>
 			</div>
@@ -182,7 +182,9 @@ if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" ) {
 		<?php endforeach; ?>
 	</div>
 	<div class="footer">
-		<p class="copyright">&copy; <?php echo date( 'Y' ); ?> plugintable.com / see also <a href="http://wpthemetable.com/" title="The Periodic Table of WordPress Themes" target="_blank">wpthemetable.com</a></p>
+		<p class="copyright">&copy; <?php echo date( 'Y' ); ?> plugintable.com / see also
+			<a href="http://wpthemetable.com/" title="The Periodic Table of WordPress Themes" target="_blank">wpthemetable.com</a>
+		</p>
 
 		<p class="info">Brought to you by
 			<a href="https://twitter.com/spinpress" target="_blank" title="Twitter - @SpinPress">@SpinPress</a> /

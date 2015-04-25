@@ -11,11 +11,19 @@ function sort_by_downloads( $a, $b ) {
 	return ( $a->downloaded > $b->downloaded ) ? - 1 : 1;
 }
 
+function sort_by_installs( $a, $b ) {
+	if ( $a->active_installs == $b->active_installs ) {
+		return sort_by_downloads( $a, $b );
+	}
+
+	return ( $a->active_installs > $b->active_installs ) ? - 1 : 1;
+}
+
 function get_plugins() {
 	$today        = new DateTime( 'today', new DateTimeZone( 'Europe/Zurich' ) );
-	$last_updated = DateTime::createFromFormat( 'Y-m-d', date( 'Y-m-d', filemtime( '_plugins.txt' ) ), new DateTimeZone( 'Europe/Zurich' ) );
-	$plugins      = @file_get_contents( './_plugins.txt' );
-	if ( $last_updated < $today ||  null === json_decode( $plugins ) || ! file_exists( '_plugins.txt' ) ) {
+	$last_updated = DateTime::createFromFormat( 'Y-m-d', date( 'Y-m-d', filemtime( '_plugins.json' ) ), new DateTimeZone( 'Europe/Zurich' ) );
+	$plugins      = @file_get_contents( './_plugins.json' );
+	if ( $last_updated < $today ||  null === json_decode( $plugins ) || ! file_exists( '_plugins.json' ) ) {
 		remote_get_plugins();
 	}
 
@@ -29,13 +37,18 @@ function remote_get_plugins() {
 			'browse'   => 'popular',
 			'per_page' => 108,
 			'fields'   => array(
-				'description'   => true,
-				'compatibility' => false,
-				'rating'        => true,
-				'downloaded'    => true,
-				'downloadlink'  => false,
-				'last_updated'  => false,
-				'homepage'      => false
+				'description'     => false,
+				'compatibility'   => false,
+				'rating'          => true,
+				'ratings'         => false,
+				'active_installs' => true,
+				'downloaded'      => true,
+				'downloadlink'    => false,
+				'last_updated'    => false,
+				'requires'        => false,
+				'tested'          => false,
+				'compatibility'   => false,
+				'homepage'        => false
 			)
 		) )
 	);
@@ -49,16 +62,17 @@ function remote_get_plugins() {
 	$result = curl_exec( $ch );
 
 	$data = unserialize( $result );
+
 	if ( $data !== false ) {
-		usort( $data->plugins, "sort_by_downloads" );
-		file_put_contents( '_plugins.txt', json_encode( $data->plugins ) );
+		usort( $data->plugins, 'sort_by_installs' );
+		file_put_contents( '_plugins.json', json_encode( $data->plugins ) );
 	}
 
 	curl_close( $ch );
 }
 
 function get_plugins_from_cache() {
-	$plugins = file_get_contents( './_plugins.txt' );
+	$plugins = file_get_contents( './_plugins.json' );
 
 	return json_decode( $plugins, true );
 }
