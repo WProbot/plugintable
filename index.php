@@ -1,32 +1,31 @@
 <?php
-if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" ) {
+if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] === "on" ) {
 	header( 'Location: http://plugintable.com' );
 	exit;
 }
+
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require_once __DIR__ . '/vendor/autoload.php';
+}
+
+require_once __DIR__ . '/load.php';
+
 ?>
 <?php header( 'Content-type: text/html; charset=utf-8' ); ?>
 <!DOCTYPE html>
-<!--[if IE 7]>
-<html class="ie ie7" lang="en-US">
-<![endif]-->
-<!--[if IE 8]>
-<html class="ie ie8" lang="en-US">
-<![endif]-->
-<!--[if !(IE 7) | !(IE 8)  ]><!-->
 <html lang="en-US">
-<!--<![endif]-->
 <head>
 	<title>The Periodic Table of WordPress Plugins</title>
 	<meta name="viewport" content="width=1360">
 	<link rel="stylesheet" href="css/style.css" />
-	<meta name="description" content="Over 35000 WordPress plugins have been contributed to the WordPress.org Plugin Directory. This table showcases the 108 most popular WordPress plugins, ranked by the number of downloads." />
+	<meta name="description" content="Over 50000 WordPress plugins have been contributed to the WordPress.org Plugin Directory. This table showcases the 108 most popular WordPress plugins, ranked by the number of downloads." />
 	<meta name="keywords" content="WordPress, Plugins, Periodic Table, Community, Downloads" />
 	<meta name="robots" content="index, follow" />
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="en_US" />
 	<meta property="og:title" content="The Periodic Table of WordPress Plugins" />
 	<meta property="og:url" content="http://plugintable.com" />
-	<meta property="og:description" content="Over 35000 WordPress plugins have been contributed to the WordPress.org Plugin Directory. This table showcases the 108 most popular WordPress plugins, ranked by the number of downloads." />
+	<meta property="og:description" content="Over 50000 WordPress plugins have been contributed to the WordPress.org Plugin Directory. This table showcases the 108 most popular WordPress plugins, ranked by the number of downloads." />
 	<link href="https://plus.google.com/103365919153496720927/" rel="author" />
 	<link href="https://plus.google.com/+SpinPress" rel="publisher" />
 	<!--
@@ -126,8 +125,6 @@ if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" ) {
 			</div>
 		</div>
 		<div class="info-text">
-			<a href="https://spinpress.com/subscribe/" target="_blank" title="Subscribe to our blog!">
-				<p>Curious about future updates? Subscribe to our blog for more information!</p></a>
 		</div>
 	</div>
 </div>
@@ -147,7 +144,7 @@ if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" ) {
 
 				<div class="description">
 					<p>
-						Over <strong>35&lsquo;000 WordPress plugins</strong> have been contributed to the
+						Over <strong>50&lsquo;000 WordPress plugins</strong> have been contributed to the
 						<a href="https://wordpress.org/plugins/" target="_blank">WordPress.org Plugin Directory</a>.
 						Millions of websites are powered by these plugins, developed and maintained by an amazing open-source community around the globe.
 						This table showcases the 108 most popular WordPress plugins, ranked by the number of active installs (though downloads are displayed).
@@ -156,7 +153,6 @@ if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" ) {
 			</div>
 		</aside>
 		<?php
-		require_once( 'load.php' );
 		$plugins = get_plugins();
 
 		foreach ( $plugins as $plugin ) : ?>
@@ -175,7 +171,7 @@ if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" ) {
 							<div class="version">Version: <?php echo $plugin['version']; ?></div>
 						</div>
 						<div class="description"><?php echo $plugin['short_description']; ?></div>
-						<div class="downloaded"><?php echo str_replace( '-', '&lsquo;', number_format( $plugin['downloaded'], 0, '.', '-' ) ); ?></div>
+						<div class="downloaded"><?php echo str_replace( '-', '&lsquo;', number_format( $plugin['downloaded'] ?? 0, 0, '.', '-' ) ); ?></div>
 					</div>
 				</div>
 			</div>
@@ -186,9 +182,8 @@ if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" ) {
 			<a href="http://wpthemetable.com/" title="The Periodic Table of WordPress Themes" target="_blank">wpthemetable.com</a>
 		</p>
 
-		<p class="info">Brought to you by
-			<a href="https://twitter.com/spinpress" target="_blank" title="Twitter - @SpinPress">@SpinPress</a> /
-			<a href="http://spinpress.com" title="SpinPress – A new spin on WordPress community news" target="_blank">SpinPress.com</a>
+		<p class="info">
+			Brought to you by <a href="http://pascalbirchler.com">Pascal Birchler</a> (<a href="https://twitter.com/swissspidy">@swissspidy</a>)
 		</p>
 	</div>
 </div>

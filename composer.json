@@ -1,0 +1,9 @@
+{
+	"name": "swissspidy/plugintable",
+	"description": "The Periodic Table of WordPress Plugins",
+	"type": "project",
+	"require": {
+		"php": ">7.0",
+		"rarst/wporg-client": "^0.4.0"
+	}
+}

@@ -4,26 +4,27 @@ date_default_timezone_set( 'Europe/Zurich' );
 error_reporting( 0 );
 
 function sort_by_downloads( $a, $b ) {
-	if ( $a->downloaded == $b->downloaded ) {
+	if ( ! isset( $a['downloaded'], $b['downloaded'] ) || $a['downloaded'] == $b['downloaded'] ) {
 		return 0;
 	}
 
-	return ( $a->downloaded > $b->downloaded ) ? - 1 : 1;
+	return ( $a['downloaded'] > $b['downloaded'] ) ? - 1 : 1;
 }
 
 function sort_by_installs( $a, $b ) {
-	if ( $a->active_installs == $b->active_installs ) {
+	if ( ! isset( $a['active_installs'], $b['active_installs'] ) || $a['active_installs'] == $b['active_installs'] ) {
 		return sort_by_downloads( $a, $b );
 	}
 
-	return ( $a->active_installs > $b->active_installs ) ? - 1 : 1;
+	return ( $a['active_installs'] > $b['active_installs'] ) ? - 1 : 1;
 }
 
 function get_plugins() {
 	$today        = new DateTime( 'today', new DateTimeZone( 'Europe/Zurich' ) );
 	$last_updated = DateTime::createFromFormat( 'Y-m-d', date( 'Y-m-d', filemtime( '_plugins.json' ) ), new DateTimeZone( 'Europe/Zurich' ) );
 	$plugins      = @file_get_contents( './_plugins.json' );
-	if ( $last_updated < $today ||  null === json_decode( $plugins ) || ! file_exists( '_plugins.json' ) ) {
+
+	if ( $last_updated < $today || null === json_decode( $plugins ) || ! file_exists( '_plugins.json' ) ) {
 		remote_get_plugins();
 	}
 
@@ -31,44 +32,26 @@ function get_plugins() {
 }
 
 function remote_get_plugins() {
-	$data = array(
-		'action'  => 'query_plugins',
-		'request' => serialize( (object) array(
-			'browse'   => 'popular',
-			'per_page' => 108,
-			'fields'   => array(
-				'description'     => false,
-				'compatibility'   => false,
-				'rating'          => true,
-				'ratings'         => false,
-				'active_installs' => true,
-				'downloaded'      => true,
-				'downloadlink'    => false,
-				'last_updated'    => false,
-				'requires'        => false,
-				'tested'          => false,
-				'compatibility'   => false,
-				'homepage'        => false
-			)
-		) )
-	);
+	$wporgClient = \Rarst\Guzzle\WporgClient::getClient();
+	$popular     = $wporgClient->getPluginsBy( 'browse', 'popular', 1, 108, [
+		'description'     => false,
+		'compatibility'   => false,
+		'rating'          => true,
+		'ratings'         => false,
+		'active_installs' => true,
+		'downloaded'      => true,
+		'downloadlink'    => false,
+		'last_updated'    => false,
+		'requires'        => false,
+		'tested'          => false,
+		'homepage'        => false,
+		'versions'        => false,
+	] );
 
-	$ch = curl_init();
-	curl_setopt( $ch, CURLOPT_URL, "http://api.wordpress.org/plugins/info/1.0/" );
-	curl_setopt( $ch, CURLOPT_POST, true );
-	curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
-	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-
-	$result = curl_exec( $ch );
-
-	$data = unserialize( $result );
-
-	if ( $data !== false ) {
-		usort( $data->plugins, 'sort_by_installs' );
-		file_put_contents( '_plugins.json', json_encode( $data->plugins ) );
+	if ( ! empty( $popular['plugins'] ) ) {
+		usort( $popular['plugins'], 'sort_by_installs' );
+		file_put_contents( '_plugins.json', json_encode( $popular['plugins'] ) );
 	}
-
-	curl_close( $ch );
 }
 
 function get_plugins_from_cache() {
@@ -78,10 +61,10 @@ function get_plugins_from_cache() {
 }
 
 function get_element_name( $name ) {
-	static $elements = array();
+	static $elements = [];
 
 	// Remove unnecessary characters
-	$name = trim( str_replace( array(
+	$name = trim( str_replace( [
 		'"',
 		'&',
 		'(',
@@ -91,8 +74,8 @@ function get_element_name( $name ) {
 		'WP',
 		'|',
 		'®',
-		'*'
-	), '', html_entity_decode( $name ) ), ' -–' );
+		'*',
+	], '', html_entity_decode( $name ) ), ' -–' );
 
 	// Retrieve word parts
 	$parts = preg_split( "/[-– ]/", $name ); // Jetpack | by | WordPress.com
