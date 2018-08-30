@@ -1,17 +1,11 @@
 <?php
-if ( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] === "on" ) {
-	header( 'Location: http://plugintable.com' );
-	exit;
-}
-
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
 require_once __DIR__ . '/load.php';
 
-?>
-<?php header( 'Content-type: text/html; charset=utf-8' ); ?>
+header( 'Content-type: text/html; charset=utf-8' ); ?>
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -24,7 +18,7 @@ require_once __DIR__ . '/load.php';
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="en_US" />
 	<meta property="og:title" content="The Periodic Table of WordPress Plugins" />
-	<meta property="og:url" content="http://plugintable.com" />
+	<meta property="og:url" content="https://plugintable.com" />
 	<meta property="og:description" content="Over 50000 WordPress plugins have been contributed to the WordPress.org Plugin Directory. This table showcases the 108 most popular WordPress plugins, ranked by the number of downloads." />
 	<link href="https://plus.google.com/103365919153496720927/" rel="author" />
 	<link href="https://plus.google.com/+SpinPress" rel="publisher" />
@@ -139,7 +133,7 @@ require_once __DIR__ . '/load.php';
 			</div>
 			<div class="intro">
 				<h1 class="logo">
-					<a href="http://plugintable.com" title="The Periodic Table of WordPress Plugins">The Periodic Table of WordPress Plugins</a>
+					<a href="https://plugintable.com" title="The Periodic Table of WordPress Plugins">The Periodic Table of WordPress Plugins</a>
 				</h1>
 
 				<div class="description">
@@ -157,7 +151,7 @@ require_once __DIR__ . '/load.php';
 
 		foreach ( $plugins as $plugin ) : ?>
 			<div class="plugin <?php echo $plugin['slug']; ?>">
-				<div class="element"><?php echo get_element_name( get_plugin_name( $plugin['name'] ), 3 ); ?></div>
+				<div class="element"><?php echo get_element_name( get_plugin_name( $plugin['name'] ) ); ?></div>
 				<div class="name-wrap">
 					<div class="name"><?php echo get_plugin_name( $plugin['name'], 5, true ); ?></div>
 				</div>
@@ -179,16 +173,16 @@ require_once __DIR__ . '/load.php';
 	</div>
 	<div class="footer">
 		<p class="copyright">&copy; <?php echo date( 'Y' ); ?> plugintable.com / see also
-			<a href="http://wpthemetable.com/" title="The Periodic Table of WordPress Themes" target="_blank">wpthemetable.com</a>
+			<a href="https://wpthemetable.com/" title="The Periodic Table of WordPress Themes" target="_blank">wpthemetable.com</a>
 		</p>
 
 		<p class="info">
-			Brought to you by <a href="http://pascalbirchler.com">Pascal Birchler</a> (<a href="https://twitter.com/swissspidy">@swissspidy</a>)
+			Brought to you by <a href="https://pascalbirchler.com">Pascal Birchler</a> (<a href="https://twitter.com/swissspidy">@swissspidy</a>)
 		</p>
 	</div>
 </div>
 <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9/jquery.min.js"></script>-->
-<script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.9.0.min.js"></script>
 <script>
 	jQuery(document).ready(function ($) {
 		$(".plugin:nth-of-type(2)").addClass('nth-of-type-float');
