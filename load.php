@@ -80,17 +80,19 @@ function get_element_name( $name ) {
 	// Retrieve word parts
 	$parts = preg_split( "/[-– ]/", $name ); // Jetpack | by | WordPress.com
 
+	$letters = [];
+
 	/**
 	 * First attempt
 	 * Result: Jb
 	 */
 	foreach ( $parts as $part ) {
 		// First letter of every part
-		$letters[] = substr( $part, 0, 1 );
+		$letters[] = mb_substr( $part, 0, 1 );
 
 		// If only 1 part, get 2nd letter
 		if ( 1 === count( $parts ) ) {
-			$letters[] = substr( $part, 1, 1 );
+			$letters[] = mb_substr( $part, 1, 1 );
 		}
 	}
 	// Put element name together
@@ -110,15 +112,14 @@ function get_element_name( $name ) {
 	 */
 	$x    = 1;
 	$part = 0;
-	while ( isset( $elements[ $element ] ) && isset( $parts[ $part ] ) ) {
-		if ( strlen( $parts[ $part ] ) == $x ) {
+	while ( isset( $elements[ $element ], $parts[ $part ] ) ) {
+		if ( strlen( $parts[ $part ] ) === $x ) {
 			$x = 0;
 			$part ++;
 		}
-		$element = ucfirst( strtolower( $letters[0] . substr( $parts[ $part ], $x, 1 ) ) );
+		$element = ucfirst( strtolower( $letters[0] . mb_substr( $parts[ $part ], $x, 1 ) ) );
 		$x ++;
 	}
-
 
 	/**
 	 * Reserved names
@@ -150,6 +151,18 @@ function get_element_name( $name ) {
 			break;
 		case 'WordPress Importer':
 			$element = 'Im';
+			break;
+		case 'WooCommerce':
+		case 'Woo­Commerce':
+			$element = 'Wc';
+			break;
+		case 'WooCommerce PayPal Checkout':
+		case 'WooCommerce PayPal Checkout Gateway':
+			$element = 'Pg';
+			break;
+		case 'WooCommerce Stripe Payment':
+		case 'WooCommerce Stripe Payment Gateway':
+			$element = 'Sg';
 			break;
 	}
 
